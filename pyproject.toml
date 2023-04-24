@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "project_artistiques"
+version = "0.1.0"
+description = ""
+authors = ["chenyu.z  <barbarazha@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.8, <3.12"
+scipy = "^1.10.1"
+Pillow = "^9.5.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
