@@ -3,7 +3,7 @@ from PIL import Image
 from scipy import spatial
 import numpy as np
 from typing import Tuple
-
+import random
 
 class Mosaic(object):
     def __init__(self, tile_size: Tuple, path_photos: Path):
@@ -16,7 +16,7 @@ class Mosaic(object):
     @property
     def tile_photos(self):
         return self.path_photos.parent / "tile_photos"
-
+        # return Path("D:\迅雷下载\ImageNet\data\ImageNet2013\ILSVRC2013_DET_val")
     def _preprocess_main_photos(self):
         main_photo = Image.open(str(self.path_photos))
         self.width = int(np.round(main_photo.size[0] / self.tile_size[0]))
@@ -30,9 +30,16 @@ class Mosaic(object):
     def _preprocess_tile_photos(self):
         self.colors = []
         self.tiles = []
-        for p in self.tile_photos.iterdir():
-            tile = Image.open(str(p)).resize(self.tile_size)
+        tile_numbers = max(self.output.size[0], self.output.size[1])
+        photos = random.sample([p for p in self.tile_photos.iterdir()], tile_numbers)
+        for p in photos:
+            try:
+                tile = Image.open(str(p)).resize(self.tile_size)
+            except OSError:
+                continue
             mean_color = np.array(tile).mean(axis=0).mean(axis=0)
+            if mean_color.size!=3:
+                continue
             self.tiles.append(tile)
             self.colors.append(mean_color)
 
@@ -51,3 +58,4 @@ class Mosaic(object):
                 index = self.closest_tiles[i, j]
                 self.output.paste(self.tiles[index], (x, y))
         self.output.save(output_name)
+
