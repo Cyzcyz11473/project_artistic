@@ -25,7 +25,7 @@ if __name__ == "__main__":
     parser.add_argument("--tile_size",
                         type=tuple,
                         default=(15, 15),
-                        help="path of output")
+                        help="resize real image to tile size")
     args = parser.parse_args()
     run(path_photos=Path(args.path_photos), output_path=Path(args.output_path),
         tile_size=args.tile_size)
