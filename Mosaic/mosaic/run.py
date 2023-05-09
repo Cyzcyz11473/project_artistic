@@ -4,6 +4,10 @@ from scipy import spatial
 import numpy as np
 from typing import Tuple
 import random
+from tqdm import tqdm
+import sys
+import logging
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 class Mosaic(object):
     def __init__(self, tile_size: Tuple, path_photos: Path):
@@ -32,7 +36,8 @@ class Mosaic(object):
         self.tiles = []
         tile_numbers = max(self.output.size[0], self.output.size[1])
         photos = random.sample([p for p in self.tile_photos.iterdir()], tile_numbers)
-        for p in photos:
+        logging.info("prepare tile photos...")
+        for p in tqdm(photos):
             try:
                 tile = Image.open(str(p)).resize(self.tile_size)
             except OSError:
@@ -45,14 +50,16 @@ class Mosaic(object):
 
     def find_closest_colors(self):
         tree = spatial.KDTree(self.colors)
-        for i in range(self.width):
+        logging.info("find closet colors...")
+        for i in tqdm(range(self.width)):
             for j in range(self.height):
                 pixel = self.resized_photo.getpixel((i, j))  # Get the pixel color at (i, j)
                 closest = tree.query(pixel)  # return (distance, index)
                 self.closest_tiles[i, j] = closest[1]  # get index of tile correspond
 
     def draw_outputs(self, output_name: Path):
-        for i in range(self.width):
+        logging.info("draw output...")
+        for i in tqdm(range(self.width)):
             for j in range(self.height):
                 x, y = i * self.tile_size[0], j * self.tile_size[1]
                 index = self.closest_tiles[i, j]
