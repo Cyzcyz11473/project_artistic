@@ -35,10 +35,15 @@ poetry install
 # Run pipeline
 
 ## instruction 
-Once download ``tile_photos``, you should move the folder under ``project_artistic/Mosaic/data``. To run pipeline:
+To run pipeline:
 
 ```
-poetry run python project_artiscit/Mosaic/main.py --path_photos [PATH_TO_IMAGE_8K] --output_path [OUTPUT_IMAGE_PATH] --tile_size [TILE_IMAGE_SIZE]
+poetry run python project_artiscit/Mosaic/main.py --path_photos [PATH_TO_IMAGE_8K] --path_tile_photos [PATH_TO_TILE_PHOTOS] --output_path [OUTPUT_IMAGE_PATH] --tile_size [TILE_IMAGE_SIZE] 
+```
+
+Tu run mosaic.exe:
+```
+.\exe\mosaic.exe --path_photos [PATH_TO_IMAGE_8K] --path_tile_photos [PATH_TO_TILE_PHOTOS] --output_path [OUTPUT_IMAGE_PATH] --tile_size 20,20 
 ```
 
 ## examples
